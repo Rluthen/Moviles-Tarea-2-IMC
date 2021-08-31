@@ -39,6 +39,16 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calcular IMC'),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  heightController.text = "";
+                  weightController.text = "";
+                });
+              },
+              icon: Icon(Icons.delete_forever))
+        ],
       ),
       body: ListView(
         children: [
@@ -74,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                 controller: heightController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: "Ingresar altura",
+                  labelText: "Ingresar altura (m)",
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -105,7 +115,11 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(color: Colors.grey[200]),
                     ),
                     onPressed: () {
-                      _showIMC();
+                      if (weightController.text != "" &&
+                          heightController.text != "") {
+                        _showIMC();
+                      }
+                      ;
                     },
                     color: Colors.green,
                   ),
@@ -128,9 +142,40 @@ class _HomePageState extends State<HomePage> {
               'Tu IMC: ${num.parse(weightController.text) / pow(num.parse(heightController.text), 2)}'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
-                Text('This is a demo alert dialog.'),
-                Text('Would you like to approve of this message?'),
+              children: <Widget>[
+                _male
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Tabla del IMC para hombres"),
+                          Text(""),
+                          Text("Edad  | IMC Ideal"),
+                          Text("16    | 19-24"),
+                          Text("17    | 20-25"),
+                          Text("18    | 20-25"),
+                          Text("19-24 | 21-26"),
+                          Text("25-34 | 22-27"),
+                          Text("35-54 | 23-38"),
+                          Text("55-64 | 24-29"),
+                          Text("65-90 | 25-30"),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Tabla del IMC para mujeres"),
+                          Text(""),
+                          Text("Edad  | IMC Ideal"),
+                          Text("16-17 | 19-24"),
+                          Text("18    | 19-24"),
+                          Text("19-24 | 19-24"),
+                          Text("25-34 | 20-25"),
+                          Text("35-54 | 21-26"),
+                          Text("55-64 | 22-27"),
+                          Text("65-90 | 23-28"),
+                          Text("65-90 | 25-30"),
+                        ],
+                      ),
               ],
             ),
           ),
